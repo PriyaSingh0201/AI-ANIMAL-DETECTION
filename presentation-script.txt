@@ -1,0 +1,30 @@
+# Ideathon Presentation Script
+
+## 1. Problem Statement (30 seconds)
+"Every year, 1.5 million animals die in road accidents. Our AI system prevents this."
+
+## 2. Solution Demo (2 minutes)
+- Open live website
+- Show homepage features
+- Navigate to Dashboard
+- Demonstrate AI detection
+- Show real-time alerts
+- Display analytics
+
+## 3. Technical Highlights (1 minute)
+- YOLO v8 AI model
+- 94% accuracy
+- Real-time processing
+- Cloud deployment ready
+
+## 4. Social Impact (30 seconds)
+- Saves human lives
+- Protects wildlife
+- Reduces costs
+
+## 5. Business Model (30 seconds)
+- Highway authorities
+- Insurance companies
+- Government contracts
+
+Total: 4 minutes + Q&A

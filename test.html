@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+ margin:0;
+ background:#222;
+ color:white;
+ font-family:Arial;
+ padding:20px;
+}
+
+.btn{
+ background:#3fa3ff;
+ border:none;
+ color:white;
+ padding:15px 25px;
+ border-radius:8px;
+ font-size:16px;
+ margin:10px;
+ cursor:pointer;
+ display:block;
+ width:200px;
+}
+
+.alert{
+ background:#ff3b3b;
+ padding:20px;
+ border-radius:10px;
+ margin:20px 0;
+ display:none;
+ text-align:center;
+ font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🐾 Simple Animal Detection Test</h1>
+
+<button class="btn" onclick="testDetection()">🤖 Test Detection</button>
+<button class="btn" onclick="testCamera()">📹 Test Camera</button>
+<button class="btn" onclick="testGPS()">📍 Test GPS</button>
+
+<div class="alert" id="alert">
+🚨 ANIMAL DETECTED!<br>
+<span id="result">Testing...</span>
+</div>
+
+<div id="status">Ready to test...</div>
+
+<script>
+function testDetection() {
+ const animals = ["Cow", "Deer", "Tiger", "Dog"];
+ const animal = animals[Math.floor(Math.random() * animals.length)];
+ 
+ document.getElementById('result').textContent = animal + " detected!";
+ document.getElementById('alert').style.display = 'block';
+ 
+ if (navigator.vibrate) {
+  navigator.vibrate([200, 100, 200]);
+ }
+ 
+ setTimeout(() => {
+  document.getElementById('alert').style.display = 'none';
+ }, 3000);
+}
+
+function testCamera() {
+ navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => {
+   document.getElementById('status').textContent = '✅ Camera working!';
+   stream.getTracks().forEach(track => track.stop());
+  })
+  .catch(err => {
+   document.getElementById('status').textContent = '❌ Camera failed: ' + err.message;
+  });
+}
+
+function testGPS() {
+ if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+   pos => {
+    document.getElementById('status').textContent = 
+     `✅ GPS working! Location: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+   },
+   err => {
+    document.getElementById('status').textContent = '❌ GPS failed: ' + err.message;
+   }
+  );
+ } else {
+  document.getElementById('status').textContent = '❌ GPS not supported';
+ }
+}
+</script>
+
+</body>
+</html>

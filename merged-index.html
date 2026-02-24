@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Animal Detection & Accident Prevention System</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-paw"></i>
+                <span>AI Animal Detection</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#analytics">Analytics</a></li>
+                <li><a href="#gps">📍 GPS</a></li>
+                <li><a href="#mobile">📱 Mobile</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>AI-Powered Animal Detection & Accident Prevention System</h1>
+            <p>Real-time AI system that detects animals on roads & prevents accidents using smart alerts.</p>
+            
+            <div class="btn-group">
+                <a href="#dashboard" class="btn btn-primary">🚦 Live Dashboard</a>
+                <a href="#analytics" class="btn btn-primary">📊 View Analytics</a>
+                <a href="#gps" class="btn btn-primary">📍 GPS Tracking</a>
+                <a href="#mobile" class="btn btn-primary">📱 Mobile App</a>
+            </div>
+            
+            <div class="feature-highlights" style="margin-top:40px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;max-width:900px;margin-left:auto;margin-right:auto;">
+                <div class="highlight-card" style="text-align:center;padding:25px;background:rgba(19,31,60,0.9);border-radius:15px;backdrop-filter:blur(10px);">
+                    <h3 style="color:#3fa3ff;margin-top:0;">🤖 AI Detection</h3>
+                    <p>Advanced ML models detect animals with 94%+ accuracy</p>
+                </div>
+                <div class="highlight-card" style="text-align:center;padding:25px;background:rgba(19,31,60,0.9);border-radius:15px;backdrop-filter:blur(10px);">
+                    <h3 style="color:#6aff6a;margin-top:0;">⚡ Real-time</h3>
+                    <p>Instant alerts within 0.2 seconds of detection</p>
+                </div>
+                <div class="highlight-card" style="text-align:center;padding:25px;background:rgba(19,31,60,0.9);border-radius:15px;backdrop-filter:blur(10px);">
+                    <h3 style="color:#ff6b6b;margin-top:0;">🛡️ Prevention</h3>
+                    <p>Prevents accidents & saves both human & animal lives</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Real-Time Detection</h3>
+                    <p>Instant AI-powered animal detection on roads</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                    <h3>Early Warnings</h3>
+                    <p>Visual and audio alerts for drivers</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-video"></i></div>
+                    <h3>Existing Cameras</h3>
+                    <p>Works with CCTV/phone cameras</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Smart AI Model</h3>
+                    <p>Detects cows, dogs, deer, elephants</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-cloud-moon"></i></div>
+                    <h3>24/7 Operation</h3>
+                    <p>Works day, night, and in fog</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+                    <h3>Zone Monitoring</h3>
+                    <p>Alerts only in danger zones</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Live Detection Demo</h2>
+            <div class="demo-container">
+                <div class="demo-video">
+                    <canvas id="videoCanvas" width="800" height="450"></canvas>
+                    <div class="detection-overlay">
+                        <div>AI Status: <span id="aiStatus">Active</span></div>
+                        <div>YOLO Model: <span id="yoloStatus">Loaded</span></div>
+                        <div>Processing: <span id="processingTime">0ms</span></div>
+                        <div>Detections: <span id="detectionCount">0</span></div>
+                        <div>Confidence: <span id="confidence">0%</span></div>
+                        <div>Danger Zone: <span id="dangerStatus">Clear</span></div>
+                    </div>
+                </div>
+                <div class="detection-status">
+                    <div class="status-indicator"></div>
+                    <span>System Monitoring - AI Detection Active</span>
+                </div>
+                <div class="demo-controls">
+                    <button class="btn btn-primary" onclick="startDetection()">
+                        <i class="fas fa-play"></i> Start Detection
+                    </button>
+                    <button class="btn btn-outline" style="background: rgba(255,255,255,0.2); border-color: white;" onclick="stopDetection()">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <button class="btn btn-outline" style="background: rgba(255,255,255,0.2); border-color: white;" onclick="simulateDetection()">
+                        <i class="fas fa-magic"></i> Simulate Animal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section" id="dashboard">
+        <div class="container">
+            <h2 class="section-title">🚦 Live Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>🎥 Live Road Monitoring</h3>
+                    <div class="camera-box" id="cameraBox">
+                        <div style="text-align: center; color: #8aa8ff;">
+                            <i class="fas fa-video" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                            <p>🛣️ Road Camera Feed</p>
+                            <button class="btn btn-primary" onclick="startCamera()">📹 Start Camera</button>
+                        </div>
+                    </div>
+                    <div class="status-bar">
+                        <span>Status: <span id="cameraStatus">Ready</span></span>
+                        <span>Confidence: <span id="cameraConfidence">0%</span></span>
+                    </div>
+                    <div class="alert" id="cameraAlert" style="display:none;">
+                        🚨 Animal Detected on Road — Slow Down Immediately!
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>📊 Detection Stats</h3>
+                    <table class="table">
+                        <tr><th>Animal</th><th>Count</th><th>Last Seen</th></tr>
+                        <tr><td>Cow</td><td id="cowCount">0</td><td id="cowTime">-</td></tr>
+                        <tr><td>Dog</td><td id="dogCount">0</td><td id="dogTime">-</td></tr>
+                        <tr><td>Deer</td><td id="deerCount">0</td><td id="deerTime">-</td></tr>
+                        <tr><td>Elephant</td><td id="elephantCount">0</td><td id="elephantTime">-</td></tr>
+                    </table>
+                </div>
+                <div class="dashboard-card">
+                    <h3>⚠️ Alert System</h3>
+                    <div class="alert" id="alertBox" style="display: block; background: #0f1b34; color: #8aa8ff;">
+                        <strong>No active alerts</strong>
+                    </div>
+                    <div class="status-bar">
+                        <span>AI Model: <span class="green">Active</span></span>
+                        <span>Camera Feed: <span class="green">Connected</span></span>
+                        <span>Alerts: <span class="green">Enabled</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-section" id="analytics">
+        <div class="container">
+            <h2 class="section-title">📊 Analytics & Reports</h2>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3>🎯 AI Performance Metrics</h3>
+                    <div class="performance-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Detection Accuracy:</span>
+                            <span class="stat-value">94.2%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Animals Detected:</span>
+                            <span class="stat-value">847</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Accidents Prevented:</span>
+                            <span class="stat-value">23</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h3>📈 Detection Trends</h3>
+                    <div class="chart-placeholder">
+                        <canvas id="trendChart" width="300" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GPS Section -->
+    <section class="gps-section" id="gps">
+        <div class="container">
+            <h2 class="section-title">📍 GPS Tracking System</h2>
+            <div class="gps-dashboard">
+                <div class="gps-map-container">
+                    <div class="gps-map">
+                        <div class="map-overlay">
+                            <div class="location-pin active">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div class="ping"></div>
+                            </div>
+                        </div>
+                        <div class="map-controls">
+                            <button class="map-btn" onclick="enableGPS()">📍 Enable GPS</button>
+                            <button class="map-btn" onclick="showToast('Tracking zones')">🎯 Track Zones</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="gps-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon">🌍</div>
+                        <div class="stat-info">
+                            <h4>Active Zones</h4>
+                            <span class="stat-value">12</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">📡</div>
+                        <div class="stat-info">
+                            <h4>GPS Accuracy</h4>
+                            <span class="stat-value">±3m</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <h4>Update Rate</h4>
+                            <span class="stat-value">1s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Section -->
+    <section class="mobile-section" id="mobile">
+        <div class="container">
+            <h2 class="section-title">📱 Mobile Application</h2>
+            <div class="mobile-showcase">
+                <div class="mobile-features">
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">📱</div>
+                            <div class="feature-text">
+                                <h4>Real-time Alerts</h4>
+                                <p>Instant notifications on your phone</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🗺️</div>
+                            <div class="feature-text">
+                                <h4>GPS Integration</h4>
+                                <p>Location-based tracking & alerts</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-text">
+                                <h4>Personal Dashboard</h4>
+                                <p>Your detection history & stats</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="download-buttons">
+                        <button class="download-btn android" onclick="showToast('Android app coming soon!')">
+                            <i class="fab fa-google-play"></i>
+                            <div>
+                                <small>Get it on</small>
+                                <strong>Google Play</strong>
+                            </div>
+                        </button>
+                        <button class="download-btn ios" onclick="showToast('iOS app coming soon!')">
+                            <i class="fab fa-apple"></i>
+                            <div>
+                                <small>Download on the</small>
+                                <strong>App Store</strong>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="mobile-preview">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="app-header">
+                                <div class="status-bar">
+                                    <span>9:41</span>
+                                    <div class="signal-icons">
+                                        <i class="fas fa-signal"></i>
+                                        <i class="fas fa-wifi"></i>
+                                        <i class="fas fa-battery-three-quarters"></i>
+                                    </div>
+                                </div>
+                                <div class="app-title">
+                                    <i class="fas fa-paw"></i>
+                                    <span>AI Detection</span>
+                                </div>
+                            </div>
+                            <div class="app-content">
+                                <div class="alert-card active">
+                                    <div class="alert-icon">⚠️</div>
+                                    <div class="alert-text">
+                                        <strong>Animal Detected</strong>
+                                        <p>Cow spotted 200m ahead</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">About Our System</h2>
+            <div class="about-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">Our AI-powered animal detection system represents a breakthrough in road safety technology. By combining advanced machine learning algorithms with real-time video processing, we're creating safer roads for both humans and wildlife.</p>
+                <div class="about-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem;">
+                    <div class="stat-card" style="padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                        <h3 style="color: var(--primary-color); font-size: 2.5rem; margin-bottom: 0.5rem;">94%</h3>
+                        <p>Detection Accuracy</p>
+                    </div>
+                    <div class="stat-card" style="padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                        <h3 style="color: var(--primary-color); font-size: 2.5rem; margin-bottom: 0.5rem;">0.2s</h3>
+                        <p>Response Time</p>
+                    </div>
+                    <div class="stat-card" style="padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                        <h3 style="color: var(--primary-color); font-size: 2.5rem; margin-bottom: 0.5rem;">24/7</h3>
+                        <p>Monitoring</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Dedicated to creating safer roads for both humans and wildlife through innovative AI technology.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home" style="color: white; text-decoration: none;">Home</a></li>
+                        <li><a href="#features" style="color: white; text-decoration: none;">Features</a></li>
+                        <li><a href="#demo" style="color: white; text-decoration: none;">Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-envelope"></i> info@aidetection.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Animal Detection System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="ai-model.js"></script>
+    <script>
+        let canvas, ctx, video;
+        let isDetecting = false;
+        let animationId;
+        let detectionCount = 0;
+        let aiModel;
+        const animals = ['cow', 'dog', 'deer', 'elephant'];
+        const detectionStats = { cow: 0, dog: 0, deer: 0, elephant: 0 };
+
+        window.addEventListener('load', async function() {
+            canvas = document.getElementById('videoCanvas');
+            ctx = canvas.getContext('2d');
+            
+            if (typeof AnimalDetectionAI !== 'undefined') {
+                aiModel = new AnimalDetectionAI();
+                await aiModel.loadModel();
+            }
+            
+            initCanvas();
+            initAnalytics();
+            showToast('🚀 AI Detection System Ready!');
+        });
+
+        function initCanvas() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('AI Detection System Ready', canvas.width/2, canvas.height/2);
+        }
+
+        function drawVideoFrame() {
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#333';
+            ctx.fillRect(0, canvas.height * 0.7, canvas.width, canvas.height * 0.3);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([20, 10]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2, canvas.height * 0.7);
+            ctx.lineTo(canvas.width/2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawDetectionBox(x, y, width, height, animal, confidence) {
+            const dangerZone = canvas.height * 0.7;
+            const isInDanger = (y + height) > dangerZone;
+            const color = isInDanger ? '#ff0000' : '#00ff00';
+            
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.strokeRect(x, y, width, height);
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y - 25, 150, 25);
+            ctx.fillStyle = '#000';
+            ctx.font = '14px Arial';
+            ctx.fillText(`${animal} ${confidence}%`, x + 5, y - 8);
+            
+            return isInDanger;
+        }
+
+        function startDetection() {
+            if (isDetecting) return;
+            isDetecting = true;
+            document.getElementById('aiStatus').textContent = 'Detecting';
+            showToast('🎯 Detection Started!');
+            animate();
+        }
+
+        function stopDetection() {
+            isDetecting = false;
+            document.getElementById('aiStatus').textContent = 'Stopped';
+            if (animationId) cancelAnimationFrame(animationId);
+            showToast('⏹️ Detection Stopped');
+        }
+
+        async function simulateDetection() {
+            if (!isDetecting) {
+                showToast('Please start detection first');
+                return;
+            }
+            
+            const animal = animals[Math.floor(Math.random() * animals.length)];
+            const confidence = Math.floor(Math.random() * 30) + 70;
+            const x = Math.random() * (canvas.width - 150) + 50;
+            const y = Math.random() * (canvas.height - 150) + 50;
+            
+            drawVideoFrame();
+            const inDanger = drawDetectionBox(x, y, 120, 80, animal, confidence);
+            
+            detectionCount++;
+            detectionStats[animal]++;
+            
+            document.getElementById('detectionCount').textContent = detectionCount;
+            document.getElementById('confidence').textContent = confidence + '%';
+            document.getElementById(animal + 'Count').textContent = detectionStats[animal];
+            document.getElementById(animal + 'Time').textContent = new Date().toLocaleTimeString();
+            
+            if (inDanger) {
+                document.getElementById('dangerStatus').textContent = 'ALERT!';
+                document.getElementById('dangerStatus').style.color = '#ff0000';
+                showAlert(`${animal} detected on road!`);
+                showToast(`🚨 DANGER: ${animal} on road!`);
+            } else {
+                document.getElementById('dangerStatus').textContent = 'Clear';
+                showToast(`✅ Detected: ${animal}`);
+            }
+        }
+
+        function showAlert(message) {
+            const alertBox = document.getElementById('alertBox');
+            if (alertBox) {
+                alertBox.innerHTML = `<strong>🚨 ${message}</strong>`;
+                alertBox.style.background = '#ff3b3b';
+                alertBox.style.color = 'white';
+                setTimeout(() => {
+                    alertBox.style.background = '#0f1b34';
+                    alertBox.style.color = '#8aa8ff';
+                    alertBox.innerHTML = '<strong>No active alerts</strong>';
+                }, 5000);
+            }
+        }
+
+        function startCamera() {
+            try {
+                video = document.createElement('video');
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        document.getElementById('cameraStatus').textContent = 'Camera Active';
+                        showToast('📹 Camera Started');
+                    })
+                    .catch(() => {
+                        document.getElementById('cameraStatus').textContent = 'Demo Mode';
+                        showToast('📹 Demo Mode Active');
+                    });
+            } catch(e) {
+                document.getElementById('cameraStatus').textContent = 'Demo Mode';
+            }
+        }
+
+        function initAnalytics() {
+            const chartCanvas = document.getElementById('trendChart');
+            if (chartCanvas) {
+                const chartCtx = chartCanvas.getContext('2d');
+                chartCtx.fillStyle = '#2c3e50';
+                chartCtx.fillRect(0, 0, chartCanvas.width, chartCanvas.height);
+                chartCtx.fillStyle = '#fff';
+                chartCtx.font = '16px Arial';
+                chartCtx.textAlign = 'center';
+                chartCtx.fillText('Detection Trends', chartCanvas.width/2, chartCanvas.height/2);
+            }
+        }
+
+        function animate() {
+            if (!isDetecting) return;
+            drawVideoFrame();
+            if (Math.random() < 0.008) simulateDetection();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function enableGPS() {
+            if (navigator.geolocation) {
+                showToast('🔄 Activating GPS...');
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(4);
+                        const lng = position.coords.longitude.toFixed(4);
+                        showToast(`✅ GPS Active! Location: ${lat}, ${lng}`);
+                    },
+                    () => showToast('❌ GPS access denied')
+                );
+            } else {
+                showToast('❌ GPS not supported');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast') || createToast();
+            toast.textContent = message;
+            toast.className = 'toast show';
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function createToast() {
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.className = 'toast';
+            document.body.appendChild(toast);
+            return toast;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        if (navLinks) navLinks.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

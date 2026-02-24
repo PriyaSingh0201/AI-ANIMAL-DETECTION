@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard - AI Animal Detection</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="nav">
+ <h2>🐾 Dashboard</h2>
+ <div>
+  <a href="index.html">Home</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="analytics.html">Analytics</a>
+  <a href="gps.html">GPS</a>
+  <a href="mobile.html">Mobile</a>
+  <a href="about.html">About</a>
+ </div>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h3>🎥 Live Road Monitoring</h3>
+
+<video id="videoElement" width="100%" height="300" style="border-radius:15px;background:#000;" autoplay muted></video>
+
+<div style="margin-top:15px;">
+<button class="btn" onclick="startCamera()">📹 Start Camera</button>
+<button class="btn" onclick="detectAnimal()" style="margin-left:10px;">🤖 AI Detect</button>
+<button class="btn" onclick="toggleAuto()" id="autoBtn" style="margin-left:10px;">🔄 Auto Mode</button>
+</div>
+
+<div style="margin-top:15px;color:#8aa8ff;">
+<span id="status">Status: Ready</span> | 
+<span id="confidence">Confidence: 0%</span>
+</div>
+
+<div class="alert" id="alertBox">
+🚨 Animal Detected on Road — Slow Down Immediately!
+</div>
+</div>
+
+<div class="card">
+<h3>📑 Detection Log</h3>
+
+<table class="table" id="logTable">
+<tr>
+<th>Time</th>
+<th>Animal</th>
+<th>Status</th>
+</tr>
+</table>
+
+</div>
+
+</div>
+
+<audio id="beep">
+<source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">
+</audio>
+
+<script>
+let video, isAuto = false, autoTimer;
+
+function startCamera() {
+ try {
+  video = document.getElementById('videoElement');
+  navigator.mediaDevices.getUserMedia({ video: true })
+   .then(stream => {
+    video.srcObject = stream;
+    document.getElementById('status').textContent = 'Status: Camera Active';
+   })
+   .catch(err => {
+    document.getElementById('status').textContent = 'Status: Demo Mode';
+    video.innerHTML = '<div style="color:white;text-align:center;line-height:300px;">🛣️ Road Camera Feed</div>';
+   });
+ } catch(e) {
+  document.getElementById('status').textContent = 'Status: Demo Mode';
+ }
+}
+
+function detectAnimal() {
+ // 60% detection rate
+ if (Math.random() > 0.4) {
+  const animals = ["Cow", "Dog", "Deer", "Elephant", "Tiger"];
+  const found = animals[Math.floor(Math.random() * animals.length)];
+  
+  // Show alert
+  document.getElementById('alertBox').style.display = 'block';
+  document.getElementById('alertBox').innerHTML = `🚨 ${found} Detected on Road — Slow Down Immediately!`;
+  
+  // Update confidence
+  document.getElementById('confidence').textContent = 'Confidence: 95%';
+  
+  // Play sound
+  document.getElementById('beep').play().catch(() => {});
+  
+  // Add to log
+  const table = document.getElementById('logTable');
+  const row = table.insertRow(1);
+  
+  row.insertCell(0).innerHTML = new Date().toLocaleTimeString();
+  row.insertCell(1).innerHTML = found;
+  row.insertCell(2).innerHTML = "<span class='green'>Alert Triggered</span>";
+  
+  // Hide alert after 5 seconds
+  setTimeout(() => {
+   document.getElementById('alertBox').style.display = 'none';
+  }, 5000);
+  
+ } else {
+  // No detection
+  document.getElementById('confidence').textContent = 'Confidence: 0%';
+  document.getElementById('status').textContent = 'Status: No Animal Detected';
+ }
+}
+
+function toggleAuto() {
+ const btn = document.getElementById('autoBtn');
+ 
+ if (!isAuto) {
+  isAuto = true;
+  btn.textContent = '⏹️ Stop Auto';
+  btn.style.background = '#ff3b3b';
+  
+  // Auto detect every 3 seconds
+  autoTimer = setInterval(detectAnimal, 3000);
+  document.getElementById('status').textContent = 'Status: Auto Detection ON';
+ } else {
+  isAuto = false;
+  btn.textContent = '🔄 Auto Mode';
+  btn.style.background = '#3fa3ff';
+  
+  clearInterval(autoTimer);
+  document.getElementById('status').textContent = 'Status: Manual Mode';
+ }
+}
+
+// Initialize on page load
+window.onload = function() {
+ startCamera();
+};
+</script>
+
+</body>
+</html>

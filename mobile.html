@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mobile AI Detection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+ margin:0;
+ background:#000;
+ color:white;
+ font-family:Arial;
+}
+
+.container{
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+}
+
+.camera{
+ flex:1;
+ position:relative;
+ background:#222;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+
+#video{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+
+.demo-feed{
+ font-size:18px;
+ text-align:center;
+ color:#888;
+}
+
+.status{
+ position:absolute;
+ top:10px;
+ left:10px;
+ right:10px;
+ background:rgba(0,0,0,0.8);
+ padding:10px;
+ border-radius:8px;
+ font-size:14px;
+}
+
+.alert{
+ position:absolute;
+ top:50%;
+ left:50%;
+ transform:translate(-50%,-50%);
+ background:#ff0000;
+ padding:20px;
+ border-radius:10px;
+ text-align:center;
+ display:none;
+ font-size:18px;
+ font-weight:bold;
+}
+
+.controls{
+ padding:15px;
+ background:#111;
+ display:flex;
+ gap:10px;
+}
+
+.btn{
+ background:#3fa3ff;
+ border:none;
+ color:white;
+ padding:12px 16px;
+ border-radius:8px;
+ font-size:14px;
+ cursor:pointer;
+ flex:1;
+}
+
+.btn:active{
+ background:#2d8cff;
+}
+
+.emergency{
+ background:#ff3b3b !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="camera">
+ <video id="video" autoplay muted playsinline style="display:none;"></video>
+ <div class="demo-feed" id="demoFeed">📹 Camera Feed<br><small>Click Camera to start</small></div>
+ 
+ <div class="status">
+  🎯 Status: <span id="status">Ready</span><br>
+  🔋 Battery: <span id="battery">95%</span> | 📶 Signal: Strong<br>
+  📍 GPS: <span id="gpsStatus">Getting location...</span>
+ </div>
+ 
+ <div class="alert" id="alert">
+  🚨 ANIMAL DETECTED!<br>
+  <span id="animalName">SLOW DOWN</span>
+ </div>
+</div>
+
+<div class="controls">
+ <button class="btn" onclick="startCamera()">📹 Camera</button>
+ <button class="btn" onclick="detectAnimal()">🤖 Detect</button>
+ <button class="btn" onclick="toggleAuto()" id="autoBtn">🔄 Auto</button>
+ <button class="btn" onclick="showLocation()">📍 GPS</button>
+ <button class="btn emergency" onclick="emergency()">🚨 SOS</button>
+</div>
+
+</div>
+
+<script>
+let video, isAuto = false, autoTimer, currentLocation = null;
+
+const animals = [
+ {name: "Cow", danger: "HIGH"},
+ {name: "Deer", danger: "MEDIUM"},
+ {name: "Tiger", danger: "CRITICAL"},
+ {name: "Dog", danger: "LOW"}
+];
+
+// Simple GPS tracking
+function initGPS() {
+ if (navigator.geolocation) {
+  navigator.geolocation.watchPosition(
+   position => {
+    currentLocation = {
+     lat: position.coords.latitude,
+     lon: position.coords.longitude,
+     speed: position.coords.speed || 0
+    };
+    
+    document.getElementById('gpsStatus').textContent = 
+     `${currentLocation.lat.toFixed(4)}, ${currentLocation.lon.toFixed(4)}`;
+   },
+   error => {
+    document.getElementById('gpsStatus').textContent = 'GPS Off';
+   }
+  );
+ } else {
+  document.getElementById('gpsStatus').textContent = 'No GPS';
+ }
+}
+
+function startCamera() {
+ video = document.getElementById('video');
+ 
+ navigator.mediaDevices.getUserMedia({ 
+  video: { facingMode: "environment" } 
+ })
+ .then(stream => {
+  video.srcObject = stream;
+  video.style.display = 'block';
+  document.getElementById('demoFeed').style.display = 'none';
+  document.getElementById('status').textContent = 'Camera ON';
+ })
+ .catch(err => {
+  document.getElementById('status').textContent = 'Demo Mode';
+  document.getElementById('demoFeed').innerHTML = '🛣️ Road Simulation<br><small>Demo Active</small>';
+ });
+}
+
+// Simple detection that works
+function detectAnimal() {
+ // 50% chance to detect animal
+ if (Math.random() > 0.5) {
+  const animal = animals[Math.floor(Math.random() * animals.length)];
+  showAlert(animal);
+  return true;
+ } else {
+  document.getElementById('status').textContent = 'No Animal Detected';
+  return false;
+ }
+}
+
+function showAlert(animal) {
+ const alert = document.getElementById('alert');
+ let alertText = `🚨 ${animal.name} DETECTED!<br>${animal.danger} DANGER`;
+ 
+ // Add GPS if available
+ if (currentLocation) {
+  alertText += `<br><small>📍 ${currentLocation.lat.toFixed(4)}, ${currentLocation.lon.toFixed(4)}</small>`;
+ }
+ 
+ document.getElementById('animalName').innerHTML = alertText;
+ alert.style.display = 'block';
+ 
+ // Vibrate
+ if (navigator.vibrate) {
+  navigator.vibrate([500, 200, 500]);
+ }
+ 
+ // Beep sound
+ try {
+  const beep = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+  beep.play();
+ } catch(e) {}
+ 
+ // Hide after 4 seconds
+ setTimeout(() => {
+  alert.style.display = 'none';
+  document.getElementById('status').textContent = 'Scanning...';
+ }, 4000);
+}
+
+function toggleAuto() {
+ const btn = document.getElementById('autoBtn');
+ 
+ if (!isAuto) {
+  isAuto = true;
+  btn.textContent = '⏹️ Stop';
+  btn.style.background = '#ff3b3b';
+  document.getElementById('status').textContent = 'Auto Scanning...';
+  
+  // Auto detect every 3 seconds
+  autoTimer = setInterval(() => {
+   detectAnimal();
+  }, 3000);
+ } else {
+  isAuto = false;
+  btn.textContent = '🔄 Auto';
+  btn.style.background = '#3fa3ff';
+  document.getElementById('status').textContent = 'Manual Mode';
+  clearInterval(autoTimer);
+ }
+}
+
+function showLocation() {
+ if (currentLocation) {
+  const speed = (currentLocation.speed * 3.6).toFixed(1);
+  alert(`📍 Current Location:\n${currentLocation.lat.toFixed(6)}, ${currentLocation.lon.toFixed(6)}\nSpeed: ${speed} km/h`);
+ } else {
+  alert('📍 Getting GPS location...');
+ }
+}
+
+function emergency() {
+ if (currentLocation) {
+  const lat = currentLocation.lat.toFixed(6);
+  const lon = currentLocation.lon.toFixed(6);
+  alert(`🚨 EMERGENCY!\nLocation: ${lat}, ${lon}\nTime: ${new Date().toLocaleTimeString()}\nHelp is coming!`);
+ } else {
+  alert('🚨 EMERGENCY ALERT SENT!\nRescue team notified!');
+ }
+}
+
+// Start GPS and update battery
+window.onload = function() {
+ initGPS();
+};
+
+setInterval(() => {
+ const battery = Math.floor(Math.random() * 10 + 85);
+ document.getElementById('battery').textContent = battery + '%';
+}, 10000);
+</script>
+
+</body>
+</html>

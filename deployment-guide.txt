@@ -1,0 +1,22 @@
+# GitHub Pages Deployment Guide
+
+## Quick Steps:
+
+1. Create GitHub account (github.com)
+2. Create new repository: "ai-animal-detection"
+3. Upload all files (drag & drop)
+4. Go to Settings → Pages
+5. Select "Deploy from branch" → "main"
+6. Your live URL: https://yourusername.github.io/ai-animal-detection
+
+## Files to Upload:
+- index.html
+- dashboard.html  
+- analytics.html
+- about.html
+- style.css
+- ai-model.js
+- README.md
+
+## Live Demo URL:
+Share this URL with judges for instant access!

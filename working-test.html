@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Working Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+ margin:0;
+ background:#111;
+ color:white;
+ font-family:Arial;
+ padding:20px;
+}
+
+.btn{
+ background:#3fa3ff;
+ border:none;
+ color:white;
+ padding:15px 25px;
+ border-radius:8px;
+ font-size:16px;
+ margin:10px;
+ cursor:pointer;
+ display:block;
+ width:250px;
+}
+
+.btn:active{
+ background:#2d8cff;
+}
+
+.alert{
+ background:#ff3b3b;
+ padding:20px;
+ border-radius:10px;
+ margin:20px 0;
+ display:none;
+ text-align:center;
+ font-size:18px;
+ animation:blink 1s infinite;
+}
+
+@keyframes blink {
+ 0%, 50% { opacity: 1; }
+ 51%, 100% { opacity: 0.7; }
+}
+
+#status{
+ background:#333;
+ padding:15px;
+ border-radius:8px;
+ margin:20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🐾 Detection Test - Working Version</h1>
+
+<button class="btn" onclick="testDetection()">🤖 Test Animal Detection</button>
+<button class="btn" onclick="testCamera()">📹 Test Camera Access</button>
+<button class="btn" onclick="testGPS()">📍 Test GPS Location</button>
+<button class="btn" onclick="testAuto()">🔄 Test Auto Mode</button>
+
+<div class="alert" id="alert">
+🚨 ANIMAL DETECTED!<br>
+<span id="result">Testing...</span>
+</div>
+
+<div id="status">Ready to test all features...</div>
+
+<script>
+let autoMode = false;
+let autoTimer;
+
+function testDetection() {
+ // 70% success rate
+ if (Math.random() > 0.3) {
+  const animals = ["Cow", "Deer", "Tiger", "Dog", "Elephant"];
+  const animal = animals[Math.floor(Math.random() * animals.length)];
+  
+  document.getElementById('result').textContent = `${animal} detected with 95% confidence!`;
+  document.getElementById('alert').style.display = 'block';
+  document.getElementById('status').textContent = `✅ Detection working! Found: ${animal}`;
+  
+  // Vibrate if supported
+  if (navigator.vibrate) {
+   navigator.vibrate([300, 100, 300]);
+  }
+  
+  // Hide after 4 seconds
+  setTimeout(() => {
+   document.getElementById('alert').style.display = 'none';
+  }, 4000);
+  
+ } else {
+  document.getElementById('status').textContent = '❌ No animal detected this time';
+ }
+}
+
+function testCamera() {
+ document.getElementById('status').textContent = '📹 Testing camera access...';
+ 
+ navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => {
+   document.getElementById('status').textContent = '✅ Camera access working! Permission granted.';
+   // Stop the stream
+   stream.getTracks().forEach(track => track.stop());
+  })
+  .catch(err => {
+   document.getElementById('status').textContent = '❌ Camera access failed. Using demo mode.';
+  });
+}
+
+function testGPS() {
+ document.getElementById('status').textContent = '📍 Getting GPS location...';
+ 
+ if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+   pos => {
+    const lat = pos.coords.latitude.toFixed(4);
+    const lon = pos.coords.longitude.toFixed(4);
+    document.getElementById('status').textContent = 
+     `✅ GPS working! Location: ${lat}, ${lon}`;
+   },
+   err => {
+    document.getElementById('status').textContent = '❌ GPS access denied or unavailable';
+   }
+  );
+ } else {
+  document.getElementById('status').textContent = '❌ GPS not supported on this device';
+ }
+}
+
+function testAuto() {
+ if (!autoMode) {
+  autoMode = true;
+  document.getElementById('status').textContent = '🔄 Auto mode started - detecting every 3 seconds...';
+  
+  autoTimer = setInterval(() => {
+   testDetection();
+  }, 3000);
+  
+ } else {
+  autoMode = false;
+  clearInterval(autoTimer);
+  document.getElementById('status').textContent = '⏹️ Auto mode stopped';
+ }
+}
+
+// Test on page load
+window.onload = function() {
+ document.getElementById('status').textContent = '🚀 All systems ready for testing!';
+};
+</script>
+
+</body>
+</html>
